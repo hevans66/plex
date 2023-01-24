@@ -1,0 +1,6 @@
+[submodule "example/apps/diffdock"]
+	path = example/apps/diffdock
+	url = https://github.com/labdao/diffdock
+[submodule "example/apps/gnina"]
+	path = example/apps/gnina
+	url = https://github.com/labdao/gnina
