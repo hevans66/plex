@@ -162,3 +162,4 @@ cython_debug/
 
 # ipfs
 kubo*
+plexus/utils.sh
