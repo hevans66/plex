@@ -24,7 +24,7 @@ func main() {
 	fmt.Println("Provided directory path:", *inputDir)
 	fmt.Println("Using GPU:", *gpu)
 
-	fmt.Println("## Default parameters ##")
+	fmt.Println("## Additional Configuration Information ##")
 	fmt.Println("Using app configs:", *appConfigsFilePath)
 	fmt.Println("Setting layers to:", *layers)
 
@@ -37,7 +37,7 @@ func main() {
 	}
 
 	// creating index file
-	fmt.Println("## Searching input files ##")
+	fmt.Println("## Searching for files in input directory ##")
 	identifiedFiles, err := searchDirectoryPath(inputDir, appConfig, *layers)
 	if err != nil {
 		fmt.Println(err)
@@ -90,4 +90,5 @@ func main() {
 	}
 	DownloadBacalhauResults(jobDir, submittedJob, results)
 	fmt.Println("Your job results have been downloaded to " + jobDir)
+	fmt.Println("Open this directory on your Mac by running: open " + jobDir)
 }
