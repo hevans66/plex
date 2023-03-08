@@ -84,13 +84,13 @@ func writeCSV(index_map []map[string]string, file string) (string, error) {
 	writer := csv.NewWriter(file_dict)
 	defer writer.Flush()
 
-	header := []string{"protein", "ligand"}
+	header := []string{"protein_path", "ligand"}
 	if err := writer.Write(header); err != nil {
 		return "", err
 	}
 
 	for _, row := range index_map {
-		protein := path.Join("../inputs/", row["protein"])
+		protein := path.Join("../inputs/", row["protein_path"])
 		ligand := path.Join("../inputs/", row["ligand"])
 		record := []string{protein, ligand}
 		if err := writer.Write(record); err != nil {
