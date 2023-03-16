@@ -9,12 +9,28 @@ import (
 	"github.com/labdao/plex/internal/ipfs"
 )
 
-func Execute(app, inputDir, appConfigsFilePath string, layers, memory int, local, gpu, network, dry bool) {
+func Execute(app, pipeline, inputDir, appConfigsFilePath string, layers, memory int, local, gpu, network, dry bool) {
 	// validate the flags
 	fmt.Println("## Validating ##")
-	appConfig, err := FindAppConfig(app, appConfigsFilePath)
-	if err != nil {
-		fmt.Println(err)
+
+	//
+	var appConfig AppConfig
+	var pipelineConfig PipelineConfig
+	var err error
+	if app != "" {
+		appConfig, err = FindAppConfig(app, appConfigsFilePath)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+	} else if pipeline != "" {
+		pipelineConfig, err = FindAppConfig(app, appConfigsFilePath)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+	} else {
+		fmt.Println("-app or -pipeline is required")
 		os.Exit(1)
 	}
 

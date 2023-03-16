@@ -17,13 +17,25 @@ import (
 )
 
 type AppConfig struct {
-	App    string `json:"app"`
+	App         string `json:"app"`
 	InputMethod string `json:"inputMethod"`
-	Inputs []struct {
+	Inputs      []struct {
 		Field     string   `json:"field"`
 		Filetypes []string `json:"filetypes"`
 	} `json:"inputs"`
 	Outputs []string `json:"outputs"`
+}
+
+type PipelineConfig struct {
+	Pipeline string `json:"pipeline"`
+	Steps    []struct {
+		Instruction string `json:"instruction"`
+		Index       int    `json:"index"`
+		Inputs      []struct {
+			Location string `json:"location"`
+			Type     string `json:"type"`
+		} `json:"inputs"`
+	} `json:"steps"`
 }
 
 func FindAppConfig(app, appConfigsFilePath string) (AppConfig, error) {
@@ -44,6 +56,26 @@ func FindAppConfig(app, appConfigsFilePath string) (AppConfig, error) {
 		}
 	}
 	return appConfig, err
+}
+
+func FindPipelineConfig(pipeline, pipelineConfigsFilePath string) (PipelineConfig, error) {
+	pipelineConfig := PipelineConfig{}
+	file, err := os.Open(pipelineConfigsFilePath)
+	if err != nil {
+		return pipelineConfig, err
+	}
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		err = json.Unmarshal([]byte(scanner.Text()), &pipelineConfig)
+		if err != nil {
+			return pipelineConfig, err
+		}
+		if pipelineConfig.Pipeline == pipeline {
+			fmt.Println("Pipeline found:", pipelineConfig.Pipeline)
+			return pipelineConfig, nil
+		}
+	}
+	return pipelineConfig, err
 }
 
 func writeJSONL(index_map []map[string]string, file string) {
@@ -167,30 +199,29 @@ func createCombinations(indexMap map[string][]string, fieldA, fieldB string) []m
 }
 
 func createIndex(filePaths []string, appConfig AppConfig, jobDirPath string) (string, []map[string]string) {
-    if appConfig.InputMethod == "directory" {
-        fmt.Println("Skipping index creation because input method is directory")
-        return "", []map[string]string{}
-    } else {
-        indexMap := map[string][]string{}
-        for _, filePath := range filePaths {
-            for _, input := range appConfig.Inputs {
-                for _, filetype := range input.Filetypes {
-                    if strings.HasSuffix(filePath, filetype) {
-                        indexMap[input.Field] = append(indexMap[input.Field], filePath)
-                    }
-                }
-            }
-        }
+	if appConfig.InputMethod == "directory" {
+		fmt.Println("Skipping index creation because input method is directory")
+		return "", []map[string]string{}
+	} else {
+		indexMap := map[string][]string{}
+		for _, filePath := range filePaths {
+			for _, input := range appConfig.Inputs {
+				for _, filetype := range input.Filetypes {
+					if strings.HasSuffix(filePath, filetype) {
+						indexMap[input.Field] = append(indexMap[input.Field], filePath)
+					}
+				}
+			}
+		}
 
-        fieldA, fieldB := appConfig.Inputs[0].Field, appConfig.Inputs[1].Field
-        combinations := createCombinations(indexMap, fieldA, fieldB)
-        writeJSONL(combinations, path.Join(jobDirPath, "index.jsonl"))
-        writeCSV(combinations, path.Join(jobDirPath, "index.csv"))
+		fieldA, fieldB := appConfig.Inputs[0].Field, appConfig.Inputs[1].Field
+		combinations := createCombinations(indexMap, fieldA, fieldB)
+		writeJSONL(combinations, path.Join(jobDirPath, "index.jsonl"))
+		writeCSV(combinations, path.Join(jobDirPath, "index.csv"))
 
-        return path.Join(jobDirPath, "index.csv"), combinations
-    }
+		return path.Join(jobDirPath, "index.csv"), combinations
+	}
 }
-
 
 func CreateInputCID(inputDirPath string, cmd string) (string, error) {
 	client, err := w3s.NewClient(

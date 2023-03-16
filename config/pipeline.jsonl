@@ -1,0 +1,30 @@
+{
+  "pipeline": "equibind-oddt",
+  "steps": [
+    {
+      "instruction": "equibind",
+      "inputs": [
+        {
+          "location": "inputs",
+          "type": "pdb"
+        },
+        {
+          "location": "inputs",
+          "type": "sdf"
+        },
+      ],
+      "name": "001-equibind"
+    },
+    {
+      "instruction": "oddt",
+      "index": 2,
+      "inputs": [
+        {
+          "location": "001-equibind/outputs",
+          "type": "pdb"
+        },
+      ]
+      "name": "002-oddt",
+    }
+  ]
+}

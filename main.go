@@ -32,6 +32,7 @@ func main() {
 
 	// required flags
 	app := flag.String("app", "", "Application name")
+	pipeline := flag.String("pipeline", "", "Pipeline name")
 	inputDir := flag.String("input-dir", "", "Input directory path")
 
 	// optional flags
@@ -55,5 +56,5 @@ func main() {
 	fmt.Println("Using app configs:", *appConfigsFilePath)
 	fmt.Println("Setting layers to:", *layers)
 
-	plex.Execute(*app, *inputDir, *appConfigsFilePath, *layers, *memory, *local, *gpu, *network, *dry)
+	plex.Execute(*app, *pipeline, *inputDir, *appConfigsFilePath, *layers, *memory, *local, *gpu, *network, *dry)
 }
