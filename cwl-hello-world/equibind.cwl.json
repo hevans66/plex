@@ -1,0 +1,56 @@
+{
+    "cwlVersion": "v1.2",
+    "class": "CommandLineTool",
+    "baseCommand": ["/bin/bash", "-c"],
+    "arguments": [
+        "mkdir -p /outputs;",
+        "protein_short=$(basename $(inputs.protein) .pdb);",
+        "ligand_short=$(basename $(inputs.small_molecule) .sdf);",
+
+        "python main.py --protein \"$(inputs.protein)\" --small_molecule_library \"$(inputs.small_molecule)\";",
+
+        "mv /outputs/ligands_predicted.sdf \"/outputs/${protein_short}_${ligand_short}_docked.sdf\";",
+        "rm -r /outputs/dummy;",
+        "cp \"$(inputs.protein.path)\" \"/outputs/\";"
+      ],
+    "requirements": [
+    {
+        "class": "DockerRequirement",
+        "dockerPull": "ghcr.io/labdao/equibind@sha256:ae2cec63b3924774727ed1c6c8af95cf4aaea2d3f0c5acbec56478505ccb2b07"
+    },
+    {
+        "class": "InitialWorkDirRequirement",
+        "listing": [
+        {
+            "entry": "$(inputs.protein)"
+        },
+        {
+            "entry": "$(inputs.small_molecule)"
+        }
+        ]
+    }
+    ],
+    "inputs": {
+      "protein": {
+        "type": "File"
+      },
+      "small_molecule": {
+        "type": "File"
+      }
+    },
+    "outputs": {
+      "docked_protein": {
+        "type": "File",
+        "outputBinding": {
+            "glob": "*.pdb"
+          }
+      },
+      "docked_small_molecule": {
+        "type": "File",
+        "outputBinding": {
+            "glob": "*_docked.sdf"
+          }
+      }
+    }
+  }
+  

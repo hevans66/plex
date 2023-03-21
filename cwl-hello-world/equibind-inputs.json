@@ -1,0 +1,11 @@
+{
+    "protein": {
+      "class": "File",
+      "path": "/Users/rindtorff/github/labdao/plex/6f8cf76e-6f19-4883-b92c-3b5a389a683e/7n9g.pdb"
+    },
+    "small_molecule": {
+      "class": "File",
+      "path": "/Users/rindtorff/github/labdao/plex/6f8cf76e-6f19-4883-b92c-3b5a389a683e/ZINC000003986735.sdf"
+    }
+}
+  

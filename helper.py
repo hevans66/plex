@@ -36,13 +36,15 @@ def main(args):
     # Load environment variables from .env file
     openai_api_key = os.getenv("OPENAI_API_KEY")
     wolfram_app_id = os.getenv("WOLFRAM_APP_ID")
+    #wolfram_app_id = os.getenv("SERPAPI_API_KEY")
 
     # First, let's load the language model we're going to use to control the agent.
     llm = OpenAI(temperature=0)
 
     # Next, let's load some tools to use. Note that the `llm-math` tool uses an LLM, so we need to pass that in.
     #tools = [PlexJobs()]
-    tools = load_tools(["terminal", "wolfram-alpha", "llm-math"], llm=llm)
+    tools = load_tools(["terminal"], llm=llm)
+    #tools = load_tools(["terminal", "serpapi", "wolfram-alpha", "llm-math"], llm=llm)
 
     # Finally, let's initialize an agent with the tools, the language model, and the type of agent we want to use.
     agent = initialize_agent(tools, llm, agent="zero-shot-react-description", verbose=True)

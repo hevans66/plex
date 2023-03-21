@@ -1,0 +1,22 @@
+{
+    "cwlVersion": "v1.0",
+    "class": "CommandLineTool",
+    "baseCommand": ["/bin/bash", "-c"],
+    "arguments": ["ls -l $(inputs.name)"],
+    "requirements": {
+        "DockerRequirement": {
+            "dockerPull": "ghcr.io/labdao/equibind@sha256:ae2cec63b3924774727ed1c6c8af95cf4aaea2d3f0c5acbec56478505ccb2b07"
+        }
+    },
+    "inputs": {
+        "name": {
+            "type": "string"
+        }
+    },
+    "outputs": {
+        "stdout": {
+            "type": "stdout"
+        }
+    },
+    "stdout": "stdout.txt"
+}

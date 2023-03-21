@@ -1,0 +1,24 @@
+{
+    "cwlVersion": "v1.0",
+    "class": "CommandLineTool",
+    "baseCommand": "/usr/local/bin/hello.sh",
+    "requirements": {
+      "DockerRequirement": {
+        "dockerPull": "niklastr/cwl-hello-world:latest"
+      }
+    },
+    "inputs": {
+        "name": {
+            "type": "string",
+            "inputBinding": {
+                "position": 1
+            }
+        }
+    },
+    "outputs": {
+      "example_output": {
+        "type": "stdout"
+      }
+    },
+    "stdout": "hello_world.txt"
+}
