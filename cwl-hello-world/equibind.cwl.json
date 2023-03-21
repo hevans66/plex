@@ -3,15 +3,9 @@
     "class": "CommandLineTool",
     "baseCommand": ["/bin/bash", "-c"],
     "arguments": [
-        "mkdir -p /outputs;",
-        "protein_short=$(basename $(inputs.protein) .pdb);",
-        "ligand_short=$(basename $(inputs.small_molecule) .sdf);",
 
-        "python main.py --protein \"$(inputs.protein)\" --small_molecule_library \"$(inputs.small_molecule)\";",
-
-        "mv /outputs/ligands_predicted.sdf \"/outputs/${protein_short}_${ligand_short}_docked.sdf\";",
-        "rm -r /outputs/dummy;",
-        "cp \"$(inputs.protein.path)\" \"/outputs/\";"
+        "python /src/main.py --protein $(inputs.protein) --small_molecule_library $(inputs.small_molecule);",
+        "mv *.pdb /outputs;"
       ],
     "requirements": [
     {
