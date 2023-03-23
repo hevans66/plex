@@ -1,0 +1,6 @@
+{   
+    "docked_small_molecule": {
+        "type": "File",
+        "local": "file:///Users/rindtorff/github/labdao/plex/cwl-hello-world/xyfd_predicted.sdf"
+    }
+}
