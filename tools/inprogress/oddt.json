@@ -5,7 +5,7 @@
     "baseCommand": ["/bin/bash", "-c"],
     "arguments": [
       "oddt_cli $(inputs.small_molecule.path) --receptor $(inputs.protein.path) --score rfscore_v1 --score rfscore_v2 --score rfscore_v3 --score nnscore -O /outputs/$(inputs.protein.nameroot)_$(inputs.small_molecule.nameroot)_scored.$(inputs.small_molecule.nameext);",
-      "cd /outputs && ../aggregate_score.sh"
+      "cd /outputs && ../app/aggregate_score.sh"
     ],
     "requirements": [
       {
